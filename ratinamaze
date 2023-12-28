@@ -1,0 +1,97 @@
+#include <iostream>
+#include<vector>
+using namespace std;
+bool isSafe(int maize [][4] , int row , int col , int srx , int sry ,vector<vector<bool> > &visited ){
+  if((maize[srx][sry] == 1) &&
+  (srx >=0 && srx < row) &&
+(  sry >=0 && sry < col) &&
+(visited[srx][sry] == false)){
+  return true;
+
+  }
+  else{
+    return false;
+  }
+}
+void printAllways(int maize[][4], int row , int col , int srx , int sry , string &output,vector<vector<bool> > &visited){
+  if(srx == row-1 && sry == col-1){
+    cout<<output<<endl;
+    return;
+  }
+  int nsrx = srx - 1;
+  int nsry = sry ;
+  if(isSafe(maize ,row,col,nsrx,nsry,visited)){
+    //mark visited
+     visited[nsrx][nsry] = true;
+    // recursion
+    output.push_back('U');
+    printAllways(maize,row,col,nsrx,nsry,output,visited);
+    //backtracking
+    output.pop_back();
+    visited[nsrx][nsry] = false;
+  }
+
+   nsrx = srx + 1;
+   nsry = sry ;
+  if(isSafe(maize ,row,col,nsrx,nsry,visited)){
+    //mark visited
+     visited[nsrx][nsry] = true;
+    // recursion
+    output.push_back('D');
+    printAllways(maize,row,col,nsrx,nsry,output,visited);
+    //backtracking
+    output.pop_back();
+    visited[nsrx][nsry] = false;
+  }
+
+  nsrx = srx;
+  nsry = sry + 1 ;
+  if(isSafe(maize ,row,col,nsrx,nsry,visited)){
+    //mark visited
+     visited[nsrx][nsry] = true;
+    // recursion
+    output.push_back('R');
+    printAllways(maize,row,col,nsrx,nsry,output,visited);
+    //backtracking
+    output.pop_back();
+    visited[nsrx][nsry] = false;
+  }
+
+  nsrx = srx ;
+  nsry = sry -1 ;
+  if(isSafe(maize ,row,col,nsrx,nsry,visited)){
+    //mark visited
+     visited[nsrx][nsry] = true;
+    // recursion
+    output.push_back('L');
+    printAllways(maize,row,col,nsrx,nsry,output,visited);
+    //backtracking
+    output.pop_back();
+    visited[nsrx][nsry] = false;
+  }
+}
+
+int main() {
+    int maize[4][4] = {
+      {1,0,0,0},
+      {1,1,0,0},
+      {1,1,1,0},
+      {1,1,1,1}
+    };
+    int srx = 0;
+    int sry = 0;
+    int row = 4;
+    int col = 4;
+    string output = "";
+ 
+    vector<vector<bool>>visited(row,vector<bool>(col,false));
+
+    if(maize[0][0]==0){
+      cout<<"no path exists"<<endl;
+    }
+
+    else{
+      visited[srx][sry] = true;
+      printAllways(maize,row,col,srx,sry,output,visited);
+    }
+}
