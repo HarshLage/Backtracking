@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+int merge(vector<int>&arr,int low,int mid,int high){
+    vector<int>temp;
+    int left = low;
+    int right = mid + 1;
+
+    int c = 0;
+
+    while(left <= mid && right <= high){
+        if(arr[left] <= arr[right]){
+            temp.push_back(arr[left]);
+            left++;
+        }
+        else{
+            temp.push_back(arr[right]);
+            right++;
+            c += mid - left + 1;
+        }
+    }
+
+    while(left<=mid){
+        temp.push_back(arr[left]);
+        left++;
+    }
+    while(right<=high){
+        temp.push_back(arr[right]);
+        right++;
+    }
+
+    for(int i=low;i<=high;i++){
+        arr[i] = temp[i-low];
+    }
+    return c;
+}
+int MS(vector<int>&arr , int low , int high){
+    if(low==high){
+        return 0;
+    }
+    int c = 0;
+    int mid =( low + high)/2;
+
+    c += MS(arr,low , mid);
+    c += MS(arr,mid+1,high);
+   c += merge(arr,low,mid,high);
+   
+   return c;
+}
+int  mergeSort(vector < int > & arr, int n) {
+    int c = MS(arr,0,n-1);
+    return c;  
+
+}
+int main(){
+  vector<int>arr = {8,4,2,1};
+  int c  = mergeSort(arr,arr.size());
+  cout<<c<<endl;
+  
+}
