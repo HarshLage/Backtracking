@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+using namespace std;
+int partition(vector<int>&arr,int s,int e){
+    int pivot = arr[s];
+
+    int cnt = 0;
+    for(int i = s+1;i<=e;i++){
+        if(arr[i]<=pivot){
+            cnt++;
+        }
+    }
+
+    int pivotindex = s + cnt;
+
+    swap(arr[pivotindex],arr[s]);
+
+    int i = s , j = e;
+
+    while( i < pivotindex && j > pivotindex){
+        while(arr[i]<pivot){
+            i++;
+        }
+        while(arr[j]>pivot){
+            j--;
+        }
+        if( i < pivotindex && j > pivotindex && arr[i] > arr[pivotindex]){
+            swap(arr[i++],arr[j--]);
+        }
+    }
+    return pivotindex;
+
+}
+void quicksort(vector<int>&arr, int s , int e){
+    if(s>=e){
+        return ;
+    }
+
+   int p =  partition(arr,s,e);
+     
+     //sort the left part
+    quicksort(arr,s,p-1);
+
+    //sort the right part
+    quicksort(arr,p+1,e);
+   
+}
+void Mergesort(vector<int>&arr,int low , int mid , int high){
+    int left = low;
+    int right = mid+1;
+
+    while(left<=mid && right <=high){
+        if(arr[left]>=arr[right]){
+            swap(arr[left],arr[right]);
+            quicksort(arr,right,high);
+          
+
+            
+        }
+        else{
+            left++;
+            
+        }
+    }
+
+}
+void Ms(vector<int>&arr,int low , int high){
+    if(low>=high){
+        return;
+    }
+    int mid = (low + high )/2;
+
+    Ms(arr,low,mid);
+    Ms(arr,mid+1,high);
+    Mergesort(arr,low,mid,high);
+}
+void merge(vector<int>&arr,int n){
+    Ms(arr,0,n-1);
+}
+int main()
+{
+  vector<int>ans = {7,6,5,4,3,2,1};
+  Ms(ans,0,ans.size()-1);
+
+  for(int i=0;i<ans.size();i++){
+    cout<<ans[i]<<" ";
+  }
+
+
+
+  
+
+}
